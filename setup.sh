@@ -17,12 +17,12 @@ sudo add-apt-repository -y ppa:deadsnakes/ppa
 sudo apt-get install -y -qq python3.10-full python3.10-dev
 
 # Install Oh My Zsh
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
-sudo chsh $USER -s /usr/bin/zsh
+# sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+# sudo chsh $USER -s /usr/bin/zsh
 
 # Change timezone
 # timedatectl list-timezones  # list timezones
-sudo timedatectl set-timezone Asia/Hong_Kong  # change to your timezone
+sudo timedatectl set-timezone Asia/Calcutta  # change to your timezone
 
 # Create venv
 python3.10 -m venv $HOME/.venv310
@@ -32,5 +32,3 @@ python3.10 -m venv $HOME/.venv310
 pip install -U pip
 pip install -U wheel
 pip install -U "jax[tpu]" -f https://storage.googleapis.com/jax-releases/libtpu_releases.html
-
-'
