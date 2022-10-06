@@ -1,7 +1,5 @@
 #!/bin/bash
 
-gcloud alpha compute tpus tpu-vm ssh node-2 --zone us-central2-b --worker all --command '
-
 # Confirm that the script is running on the host
 uname -a
 
@@ -19,6 +17,9 @@ sudo apt-get install -y -qq python3.10-full python3.10-dev
 # Install Oh My Zsh
 # sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 # sudo chsh $USER -s /usr/bin/zsh
+
+# install git lfs
+sudo apt-get install git-lfs
 
 # Change timezone
 # timedatectl list-timezones  # list timezones
