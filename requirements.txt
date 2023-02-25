@@ -5,7 +5,7 @@ jupyter
 # Common ML libraries
 matplotlib
 Pillow
-sklearn
+scikit-learn
 
 # Tensorflow (JAX and PyTorch also rely on these)
 tensorflow
