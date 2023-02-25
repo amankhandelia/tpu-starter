@@ -1,13 +1,20 @@
 # TPU Starter
 
+<h4 align="center">
+    <p>
+        <b>English</b> |
+        <a href="https://github.com/ayaka14732/tpu-starter/blob/main/README_ko.md">한국어</a>
+    <p>
+</h4>
+
 Everything you want to know about Google Cloud TPU
 
 * [1. Community](#1-community)
 * [2. Introduction to TPU](#2-introduction-to-tpu)
     * [2.1. Why TPU?](#21-why-tpu)
-    * [2.2. TPU is so good, why haven't I seen many people using it?](#22-tpu-is-so-good-why-havent-i-seen-many-people-using-it)
-    * [2.3. I know TPU is good now. Can I touch a real TPU?](#23-i-know-tpu-is-good-now-can-i-touch-a-real-tpu)
-    * [2.4. How do I get access to TPU?](#24-how-do-i-get-access-to-tpu)
+    * [2.2. How can I get free access to TPU?](#22-how-can-i-get-free-access-to-tpu)
+    * [2.3. TPU is so good, why haven't I seen many people using it?](#23-tpu-is-so-good-why-havent-i-seen-many-people-using-it)
+    * [2.4. I know TPU is good now. Can I touch a real TPU?](#24-i-know-tpu-is-good-now-can-i-touch-a-real-tpu)
     * [2.5. What does it mean to create a TPU instance? What do I actually get?](#25-what-does-it-mean-to-create-a-tpu-instance-what-do-i-actually-get)
 * [3. Introduction to the TRC Program](#3-introduction-to-the-trc-program)
     * [3.1. How to apply for the TRC program?](#31-how-to-apply-for-the-trc-program)
@@ -23,42 +30,43 @@ Everything you want to know about Google Cloud TPU
     * [6.3. How can I verify that the TPU is working?](#63-how-can-i-verify-that-the-tpu-is-working)
 * [7. JAX Basics](#7-jax-basics)
     * [7.1. Why JAX?](#71-why-jax)
-    * [7.2. Compute gradients with jax.grad](#72-compute-gradients-with-jaxgrad)
-    * [7.3. Load training data to CPU, then send batches to TPU](#73-load-training-data-to-cpu-then-send-batches-to-tpu)
-    * [7.4. Data parallelism on 8 TPU cores](#74-data-parallelism-on-8-tpu-cores)
-        * [7.4.1. Basics of jax.pmap](#741-basics-of-jaxpmap)
-        * [7.4.2. What if I want to have randomness in the update function?](#742-what-if-i-want-to-have-randomness-in-the-update-function)
-        * [7.4.3. What if I want to use optax optimizers in the update function?](#743-what-if-i-want-to-use-optax-optimizers-in-the-update-function)
-    * [7.5. Use optimizers from Optax](#75-use-optimizers-from-optax)
-    * [7.6. Freeze certain model parameters](#76-freeze-certain-model-parameters)
-    * [7.7. Integration with Hugging Face Transformers](#77-integration-with-hugging-face-transformers)
+    * [7.2. Parallelism](#72-parallelism)
+        * [7.2.1. Basics of jax.pmap](#721-basics-of-jaxpmap)
+        * [7.2.2. What if I want to have randomness in the update function?](#722-what-if-i-want-to-have-randomness-in-the-update-function)
+        * [7.2.3. What if I want to use optax optimizers in the update function?](#723-what-if-i-want-to-use-optax-optimizers-in-the-update-function)
+    * [7.3. Freeze certain model parameters](#73-freeze-certain-model-parameters)
+    * [7.4. Integration with Hugging Face Transformers](#74-integration-with-hugging-face-transformers)
+    * [7.5. What is a[:, None]?](#75-what-is-a-none)
 * [8. TPU Best Practices](#8-tpu-best-practices)
     * [8.1. Prefer Google Cloud Platform to Google Colab](#81-prefer-google-cloud-platform-to-google-colab)
     * [8.2. Prefer TPU VM to TPU node](#82-prefer-tpu-vm-to-tpu-node)
-    * [8.3. Run Jupyter Notebook on TPU VM](#83-run-jupyter-notebook-on-tpu-vm)
-    * [8.4. Share files across multiple TPU VM instances](#84-share-files-across-multiple-tpu-vm-instances)
-    * [8.5. Monitor TPU usage](#85-monitor-tpu-usage)
-    * [8.6. Start a server on TPU VM](#86-start-a-server-on-tpu-vm)
 * [9. JAX Best Practices](#9-jax-best-practices)
     * [9.1. Import convention](#91-import-convention)
     * [9.2. Manage random keys in JAX](#92-manage-random-keys-in-jax)
     * [9.3. Serialize model parameters](#93-serialize-model-parameters)
-    * [9.4. Convertion between NumPy arrays and JAX arrays](#94-convertion-between-numpy-arrays-and-jax-arrays)
-    * [9.5. Convertion between PyTorch tensors and JAX arrays](#95-convertion-between-pytorch-tensors-and-jax-arrays)
+    * [9.4. Conversion between NumPy arrays and JAX arrays](#94-conversion-between-numpy-arrays-and-jax-arrays)
+    * [9.5. Conversion between PyTorch tensors and JAX arrays](#95-conversion-between-pytorch-tensors-and-jax-arrays)
     * [9.6. Type annotation](#96-type-annotation)
     * [9.7. Check if an array is either a NumPy array or a JAX array](#97-check-if-an-array-is-either-a-numpy-array-or-a-jax-array)
     * [9.8. Get the shapes of all parameters in a nested dictionary](#98-get-the-shapes-of-all-parameters-in-a-nested-dictionary)
-    * [9.9. Generate random keys on CPU](#99-generate-random-keys-on-cpu)
-* [10. Confusing Syntax](#10-confusing-syntax)
-    * [10.1. What is a[:, None]?](#101-what-is-a-none)
-    * [10.2. How to understand np.einsum?](#102-how-to-understand-npeinsum)
-* [11. Common Gotchas](#11-common-gotchas)
-    * [11.1. External IP of TPU machine changes occasionally](#111-external-ip-of-tpu-machine-changes-occasionally)
-    * [11.2. One TPU device can only be used by one process at a time](#112-one-tpu-device-can-only-be-used-by-one-process-at-a-time)
-    * [11.3. TCMalloc breaks several programs](#113-tcmalloc-breaks-several-programs)
-    * [11.4. There is no TPU counterpart of nvidia-smi](#114-there-is-no-tpu-counterpart-of-nvidia-smi)
-    * [11.5. libtpu.so already in used by another process](#115-libtpuso-already-in-used-by-another-process)
-    * [11.6. JAX does not support the multiprocessing fork strategy](#116-jax-does-not-support-the-multiprocessing-fork-strategy)
+    * [9.9. The correct way to generate random numbers on CPU](#99-the-correct-way-to-generate-random-numbers-on-cpu)
+    * [9.10. Use optimizers from Optax](#910-use-optimizers-from-optax)
+    * [9.11. Use the cross-entropy loss implementation from Optax](#911-use-the-cross-entropy-loss-implementation-from-optax)
+* [10. How Can I...](#10-how-can-i)
+    * [10.1. Run Jupyter Notebook on TPU VM](#101-run-jupyter-notebook-on-tpu-vm)
+    * [10.2. Share files across multiple TPU VM instances](#102-share-files-across-multiple-tpu-vm-instances)
+    * [10.3. Monitor TPU usage](#103-monitor-tpu-usage)
+    * [10.4. Start a server on TPU VM](#104-start-a-server-on-tpu-vm)
+    * [10.5. Run separate processes on different TPU cores](#105-run-separate-processes-on-different-tpu-cores)
+* [11. Working With Pods](#11-working-with-pods)
+    * [11.1. Create a shared directory using NFS](#111-create-a-shared-directory-using-nfs)
+    * [11.2. Run a command simultaneously on all TPU Pods](#112-run-a-command-simultaneously-on-all-tpu-pods)
+* [12. Common Gotchas](#12-common-gotchas)
+    * [12.1. TPU VMs will be rebooted occasionally](#121-tpu-vms-will-be-rebooted-occasionally)
+    * [12.2. One TPU core can only be used by one process at a time](#122-one-tpu-core-can-only-be-used-by-one-process-at-a-time)
+    * [12.3. TCMalloc breaks several programs](#123-tcmalloc-breaks-several-programs)
+    * [12.4. libtpu.so already in used by another process](#124-libtpuso-already-in-used-by-another-process)
+    * [12.5. JAX does not support the multiprocessing fork strategy](#125-jax-does-not-support-the-multiprocessing-fork-strategy)
 
 <!-- Created by https://github.com/ekalinin/github-markdown-toc -->
 
@@ -66,7 +74,7 @@ This project is inspired by [Cloud Run FAQ](https://github.com/ahmetb/cloud-run-
 
 ## 1. Community
 
-As of 23 Feb 2022, there is no official chat group for Cloud TPUs. You can join the [@cloudtpu](https://t.me/cloudtpu) chat group on Telegram or [TPU Podcast](https://github.com/shawwn/tpunicorn#contact) on Discord, which are connected with each other.
+As of 23 Feb 2022, there is no official chat group for Cloud TPUs. You can join the [@cloudtpu](https://t.me/cloudtpu) chat group on Telegram or [TPU Podcast](https://github.com/shawwn/tpunicorn#ml-community) on Discord, which are connected with each other. There is also an official TRC Cloud TPU v4 user group in Google Chat.
 
 ## 2. Introduction to TPU
 
@@ -80,21 +88,19 @@ TPU is a special hardware designed specifically for machine learning. There is a
 
 Moreover, for researchers, [the TRC program](https://sites.research.google/trc/about/) provides free TPU. As far as I know, if you have ever been concerned about the computing resources for training models, this is the best solution. For more details on the TRC program, see below.
 
-### 2.2. TPU is so good, why haven't I seen many people using it?
+### 2.2. How can I get free access to TPU?
+
+Researchers can apply for the [TRC program](https://sites.research.google/trc/about/) and get access to TPU for free.
+
+### 2.3. TPU is so good, why haven't I seen many people using it?
 
 If you want to use PyTorch, TPU may not be suitable for you. TPU is poorly supported by PyTorch. In one of my experiments, one batch took about 14 seconds to run on CPU, but over 4 hours to run on TPU. Twitter user @mauricetpunkt also thinks [PyTorch's performance on TPUs is bad](https://twitter.com/mauricetpunkt/status/1506944350281945090).
 
-Another problem is that although a single TPU v3-8 device has 8 cores (16 GiB memory for each core), you need to write extra code to make use of all the 8 cores (see below). Otherwise, only the first core is used.
+Therefore, if you use TPU, you will be using JAX as the deep learning framework. Fortunately, popular deep learning libraries like Hugging Face Transformers are actively [adding JAX support](https://huggingface.co/docs/transformers/index#supported-frameworks) to their models alongside PyTorch.
 
-### 2.3. I know TPU is good now. Can I touch a real TPU?
+### 2.4. I know TPU is good now. Can I touch a real TPU?
 
 Unfortunately, in most cases you cannot touch a TPU physically. TPU is only available through cloud services.
-
-### 2.4. How do I get access to TPU?
-
-You can create TPU instances on [Google Cloud Platform](https://cloud.google.com/tpu). For more information on setting up TPU, see below.
-
-You can also use [Google Colab](https://colab.research.google.com/), but I don't recommend this way. Moreover, if you get free access to TPU from the [TRC program](https://sites.research.google/trc/about/), you will be using Google Cloud Platform, not Google Colab.
 
 ### 2.5. What does it mean to create a TPU instance? What do I actually get?
 
@@ -262,15 +268,11 @@ gcloud alpha compute tpus tpu-vm ssh node-2 --zone us-central2-b --worker all --
 
 ### 7.1. Why JAX?
 
-JAX is one of the most exciting neural network libraries and it will be the most popular neural network library in the future.
+JAX is the next generation of deep learning libraries, with excellent support for TPU. To get started quickly with JAX, you can read the official [tutorial](https://jax.readthedocs.io/en/latest/jax-101/index.html).
 
-### 7.2. Compute gradients with `jax.grad`
+### 7.2. Parallelism
 
-### 7.3. Load training data to CPU, then send batches to TPU
-
-### 7.4. Data parallelism on 8 TPU cores
-
-#### 7.4.1. Basics of `jax.pmap`
+#### 7.2.1. Basics of `jax.pmap`
 
 There are four key points here.
 
@@ -305,7 +307,7 @@ See [01-basics/test_pmap.py](01-basics/test_pmap.py) for a complete working exam
 
 See also <https://jax.readthedocs.io/en/latest/jax-101/06-parallelism.html#example>.
 
-#### 7.4.2. What if I want to have randomness in the update function?
+#### 7.2.2. What if I want to have randomness in the update function?
 
 ```python
 key, subkey = (lambda keys: (keys[0], keys[1:]))(rand.split(key, num=9))
@@ -319,13 +321,11 @@ key, *subkey = rand.split(key, num=9)
 
 Because in this way, `subkey` is a list rather than an array.
 
-#### 7.4.3. What if I want to use optax optimizers in the update function?
+#### 7.2.3. What if I want to use optax optimizers in the update function?
 
 `opt_state` should be replicated as well.
 
-### 7.5. Use optimizers from Optax
-
-### 7.6. Freeze certain model parameters
+### 7.3. Freeze certain model parameters
 
 Use [`optax.set_to_zero`](https://optax.readthedocs.io/en/latest/api.html#optax.set_to_zero) together with [`optax.multi_transform`](https://optax.readthedocs.io/en/latest/api.html#optax.multi_transform).
 
@@ -350,9 +350,13 @@ optimizer = optax.multi_transform(optimizer_scheme, param_labels)
 
 See [Freeze Parameters Example](https://colab.research.google.com/drive/1-qLk5l09bq1NxZwwbu_yDk4W7da5TnFx) for details.
 
-### 7.7. Integration with Hugging Face Transformers
+### 7.4. Integration with Hugging Face Transformers
 
 [Hugging Face Transformers](https://huggingface.co/docs/transformers/index)
+
+### 7.5. What is `a[:, None]`?
+
+[`np.newaxis`](https://numpy.org/doc/stable/reference/constants.html#numpy.newaxis)
 
 ## 8. TPU Best Practices
 
@@ -377,30 +381,6 @@ print(devices)  # should print TpuDevice
 ### 8.2. Prefer TPU VM to TPU node
 
 When you are creating a TPU instance, you need to choose between TPU VM and TPU node. Always prefer TPU VM because it is the new architecture in which TPU devices are connected to the host VM directly. This will make it easier to set up the TPU device.
-
-### 8.3. Run Jupyter Notebook on TPU VM
-
-After setting up Remote-SSH, you can work with Jupyter notebook files in VSCode.
-
-Alternatively, you can run a regular Jupyter Notebook server on the TPU VM, forward the port to your PC and connect to it. However, you should prefer VSCode because it is more powerful, offers better integration with other tools and is easier to set up.
-
-### 8.4. Share files across multiple TPU VM instances
-
-TPU VM instances in the same zone are connected with internal IPs, so you can [create a shared file system using NFS](https://tecadmin.net/how-to-install-and-configure-an-nfs-server-on-ubuntu-20-04/).
-
-### 8.5. Monitor TPU usage
-
-### 8.6. Start a server on TPU VM
-
-Example: Tensorboard
-
-Although every TPU VM is allocated with a public IP, in most cases you should expose a server to the Internet because it is insecure.
-
-Port forwarding via SSH
-
-```
-ssh -C -N -L 127.0.0.1:6006:127.0.0.1:6006 tpu1
-```
 
 ## 9. JAX Best Practices
 
@@ -445,7 +425,7 @@ Normally, the model parameters are represented by a nested dictionary like this:
 
 You can use [`flax.serialization.msgpack_serialize`](https://flax.readthedocs.io/en/latest/flax.serialization.html#flax.serialization.msgpack_serialize) to serialize the parameters into bytes, and use [`flax.serialization.msgpack_restore`](https://flax.readthedocs.io/en/latest/flax.serialization.html#flax.serialization.msgpack_serialize) to convert them back.
 
-### 9.4. Convertion between NumPy arrays and JAX arrays
+### 9.4. Conversion between NumPy arrays and JAX arrays
 
 Use [`np.asarray`](https://jax.readthedocs.io/en/latest/_autosummary/jax.numpy.asarray.html) and [`onp.asarray`](https://numpy.org/doc/stable/reference/generated/numpy.asarray.html).
 
@@ -460,7 +440,7 @@ c = onp.array([1, 2, 3])  # NumPy array
 d = np.asarray(c)  # converted to JAX array
 ```
 
-### 9.5. Convertion between PyTorch tensors and JAX arrays
+### 9.5. Conversion between PyTorch tensors and JAX arrays
 
 Convert a PyTorch tensor to a JAX array:
 
@@ -507,27 +487,99 @@ isinstance(a, (np.ndarray, onp.ndarray))
 jax.tree_map(lambda x: x.shape, params)
 ```
 
-### 9.9. Generate random keys on CPU
+### 9.9. The correct way to generate random numbers on CPU
 
-## 10. Confusing Syntax
+Use the [jax.default_device()](https://jax.readthedocs.io/en/latest/_autosummary/jax.default_device.html) context manager:
 
-### 10.1. What is `a[:, None]`?
+```python
+import jax
+import jax.random as rand
 
-[`np.newaxis`](https://numpy.org/doc/stable/reference/constants.html#numpy.newaxis)
+device_cpu = jax.devices('cpu')[0]
+with jax.default_device(device_cpu):
+    key = rand.PRNGKey(42)
+    a = rand.poisson(key, 3, shape=(1000,))
+    print(a.device())  # TFRT_CPU_0
+```
 
-### 10.2. How to understand `np.einsum`?
+See <https://github.com/google/jax/discussions/9691#discussioncomment-3650311>.
 
-## 11. Common Gotchas
+### 9.10. Use optimizers from Optax
 
-### 11.1. External IP of TPU machine changes occasionally
+### 9.11. Use the cross-entropy loss implementation from Optax
 
-As of 17 Jul 2022, the external IP address may change if there is a maintenance event.
+`optax.softmax_cross_entropy_with_integer_labels`
 
-Therefore, we should use `gcloud` command instead of directly connect to it with SSH. However, if we want to use VSCode, SSH is the only choice.
+## 10. How Can I...
 
-The system will also be rebooted.
+### 10.1. Run Jupyter Notebook on TPU VM
 
-### 11.2. One TPU device can only be used by one process at a time
+After setting up Remote-SSH, you can work with Jupyter notebook files in VSCode.
+
+Alternatively, you can run a regular Jupyter Notebook server on the TPU VM, forward the port to your PC and connect to it. However, you should prefer VSCode because it is more powerful, offers better integration with other tools and is easier to set up.
+
+### 10.2. Share files across multiple TPU VM instances
+
+TPU VM instances in the same zone are connected with internal IPs, so you can [create a shared file system using NFS](https://tecadmin.net/how-to-install-and-configure-an-nfs-server-on-ubuntu-20-04/).
+
+### 10.3. Monitor TPU usage
+
+[jax-smi](https://github.com/ayaka14732/jax-smi)
+
+### 10.4. Start a server on TPU VM
+
+Example: Tensorboard
+
+Although every TPU VM is allocated with a public IP, in most cases you should expose a server to the Internet because it is insecure.
+
+Port forwarding via SSH
+
+```
+ssh -C -N -L 127.0.0.1:6006:127.0.0.1:6006 tpu1
+```
+
+### 10.5. Run separate processes on different TPU cores
+
+https://gist.github.com/skye/f82ba45d2445bb19d53545538754f9a3
+
+## 11. Working With Pods
+
+### 11.1. Create a shared directory using NFS
+
+See also: §10.2.
+
+### 11.2. Run a command simultaneously on all TPU Pods
+
+```sh
+#!/bin/bash
+
+while read p; do
+  ssh "$p" "cd $PWD; rm -rf /tmp/libtpu_lockfile /tmp/tpu_logs; . ~/.venv310/bin/activate; $@" &
+done < external-ips.txt
+rm -rf /tmp/libtpu_lockfile /tmp/tpu_logs; . ~/.venv310/bin/activate; "$@"
+wait
+```
+
+See <https://github.com/ayaka14732/bart-base-jax/blob/f3ccef7b32e2aa17cde010a654eff1bebef933a4/startpod>.
+
+## 12. Common Gotchas
+
+### 12.1. TPU VMs will be rebooted occasionally
+
+As of 24 Oct 2022, the TPU VMs will be rebooted occasionally if there is a maintenance event.
+
+The following things will happen:
+
+1. All the running processes will be terminated
+2. The external IP address will be changed
+
+We can save the model parameters, optimiser states and other useful data occasionally, so that the model training can be easily resumed after termination.
+
+We should use `gcloud` command instead of connect directly to it with SSH. If we have to use SSH (e.g. if we want to use VSCode, SSH is the only choice), we need to manually change the target IP address.
+
+### 12.2. One TPU core can only be used by one process at a time
+
+See also: §10.5.
 
 Unlike GPU, you will get an error if you run two processes on TPU at a time:
 
@@ -535,9 +587,7 @@ Unlike GPU, you will get an error if you run two processes on TPU at a time:
 I0000 00:00:1648534265.148743  625905 tpu_initializer_helper.cc:94] libtpu.so already in use by another process. Run "$ sudo lsof -w /dev/accel0" to figure out which process is using the TPU. Not attempting to load libtpu.so in this process.
 ```
 
-Even if a TPU device has 8 cores and one process only utilizes the first core, the other processes will not be able to utilize the rest of the cores.
-
-### 11.3. TCMalloc breaks several programs
+### 12.3. TCMalloc breaks several programs
 
 [TCMalloc](https://github.com/google/tcmalloc) is Google's customized memory allocation library. On TPU VM, `LD_PRELOAD` is set to use TCMalloc by default:
 
@@ -561,13 +611,7 @@ If you encounter problems related to TCMalloc, you can disable it in the current
 unset LD_PRELOAD
 ```
 
-### 11.4. There is no TPU counterpart of `nvidia-smi`
-
-See <https://twitter.com/ayaka14732/status/1565016471323156481>.
-
-See [google/jax#9756](https://github.com/google/jax/discussions/9756).
-
-### 11.5. `libtpu.so` already in used by another process
+### 12.4. `libtpu.so` already in used by another process
 
 ```sh
 if ! pgrep -a -u $USER python ; then
@@ -578,7 +622,7 @@ rm -rf /tmp/libtpu_lockfile /tmp/tpu_logs
 
 See also <https://github.com/google/jax/issues/9220#issuecomment-1015940320>.
 
-### 11.6. JAX does not support the multiprocessing `fork` strategy
+### 12.5. JAX does not support the multiprocessing `fork` strategy
 
 Use the `spawn` or `forkserver` strategies.
 
