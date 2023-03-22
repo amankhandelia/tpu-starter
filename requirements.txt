@@ -30,9 +30,13 @@ datasets
 kaggle
 wandb
 gdown
+mlflow
 
 # For loading BART from PyTorch
 hydra-core
 omegaconf
 bitarray
 sacrebleu
+
+# for devanagari text
+histr
