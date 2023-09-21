@@ -24,12 +24,3 @@ sudo apt-get install git-lfs
 # Change timezone
 # timedatectl list-timezones  # list timezones
 sudo timedatectl set-timezone Asia/Calcutta  # change to your timezone
-
-# Create venv
-python3.10 -m venv $HOME/.venv310
-. $HOME/.venv310/bin/activate
-
-# Install JAX with TPU support
-pip install -U pip
-pip install -U wheel
-pip install -U "jax[tpu]" -f https://storage.googleapis.com/jax-releases/libtpu_releases.html
