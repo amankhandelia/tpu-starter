@@ -24,3 +24,6 @@ sudo apt-get install git-lfs
 # Change timezone
 # timedatectl list-timezones  # list timezones
 sudo timedatectl set-timezone Asia/Calcutta  # change to your timezone
+
+# install poetry
+curl -sSL https://install.python-poetry.org | python3.10 -
